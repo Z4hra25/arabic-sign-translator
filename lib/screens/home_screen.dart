@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'translate_screen.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
@@ -15,7 +16,14 @@ class HomeScreen extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             ElevatedButton(
-              onPressed: () {},
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => const TranslateScreen(),
+                  ),
+                );
+              },
               child: const Text("📷 Translate Sign"),
             ),
             const SizedBox(height: 20),
