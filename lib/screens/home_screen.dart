@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'translate_screen.dart';
+import 'text_to_sign_screen.dart';
+import 'about_screen.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
@@ -28,12 +30,26 @@ class HomeScreen extends StatelessWidget {
             ),
             const SizedBox(height: 20),
             ElevatedButton(
-              onPressed: () {},
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => const TextToSignScreen(),
+                  ),
+                );
+              },
               child: const Text("⌨️ Text to Sign"),
             ),
             const SizedBox(height: 20),
             ElevatedButton(
-              onPressed: () {},
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => const AboutScreen(),
+                  ),
+                );
+              },
               child: const Text("ℹ About"),
             ),
           ],

@@ -1,87 +1,87 @@
+import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 
-class TranslateScreen extends StatelessWidget {
+class TranslateScreen extends StatefulWidget {
   const TranslateScreen({super.key});
+
+  @override
+  State<TranslateScreen> createState() => _TranslateScreenState();
+}
+
+class _TranslateScreenState extends State<TranslateScreen> {
+  CameraController? _controller;
+  bool _isCameraInitialized = false;
+
+  Future<void> _startCamera() async {
+    final cameras = await availableCameras();
+
+    if (cameras.isNotEmpty) {
+      _controller = CameraController(
+        cameras.first,
+        ResolutionPreset.medium,
+      );
+
+      await _controller!.initialize();
+
+      setState(() {
+        _isCameraInitialized = true;
+      });
+    }
+  }
+
+  @override
+  void dispose() {
+    _controller?.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: const Text("Translate Sign"),
-        centerTitle: true,
       ),
       body: Padding(
-        padding: const EdgeInsets.all(20.0),
+        padding: const EdgeInsets.all(16),
         child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
+            Container(
+              height: 300,
+              width: double.infinity,
+              color: Colors.grey.shade300,
+              child: _isCameraInitialized
+                  ? CameraPreview(_controller!)
+                  : const Center(
+                      child: Text("Camera Preview"),
+                    ),
+            ),
+
             const SizedBox(height: 20),
 
-            // Camera Preview Box
-            Container(
-              height: 280,
-              decoration: BoxDecoration(
-                color: Colors.grey[200],
-                border: Border.all(color: Colors.grey, width: 2),
-                borderRadius: BorderRadius.circular(12),
-              ),
-              child: const Center(
-                child: Text(
-                  "Camera Preview",
-                  style: TextStyle(
-                    color: Colors.grey,
-                    fontSize: 18,
-                  ),
-                ),
-              ),
-            ),
-
-            const SizedBox(height: 24),
-
-            // Start Camera Button
             ElevatedButton(
-              onPressed: () {
-                // Camera logic will be added later
-              },
-              style: ElevatedButton.styleFrom(
-                padding: const EdgeInsets.symmetric(vertical: 14),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(10),
-                ),
-              ),
-              child: const Text(
-                "Start Camera",
-                style: TextStyle(fontSize: 16),
+              onPressed: _startCamera,
+              child: const Text("Start Camera"),
+            ),
+
+            const SizedBox(height: 20),
+
+            const Text(
+              "Prediction:",
+              style: TextStyle(
+                fontSize: 20,
+                fontWeight: FontWeight.bold,
               ),
             ),
 
-            const SizedBox(height: 24),
+            const SizedBox(height: 10),
 
-            // Prediction Box
             Container(
-              padding: const EdgeInsets.all(16),
+              width: double.infinity,
+              padding: const EdgeInsets.all(12),
               decoration: BoxDecoration(
-                border: Border.all(color: Colors.grey, width: 1.5),
-                borderRadius: BorderRadius.circular(10),
-                color: Colors.white,
+                border: Border.all(),
               ),
-              child: const Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    "Prediction:",
-                    style: TextStyle(
-                      fontSize: 16,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                  SizedBox(height: 8),
-                  Text(
-                    "",
-                    style: TextStyle(fontSize: 16),
-                  ),
-                ],
-              ),
+              child: const Text(""),
             ),
           ],
         ),
